@@ -9,6 +9,7 @@ package ua_parser;
 import com.google.common.collect.ImmutableMap;
 
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -45,12 +46,10 @@ public class PlatformParser {
     }
 
     private boolean isMobile(String ua) {
-        LOGGER.info("Checking For Mobile Device");
         return runPatternsOnString(mobileDevicePatters, ua);
     }
 
     private boolean isTablet(String ua) {
-        LOGGER.info("Checking For Tablet Device");
         return runPatternsOnString(tabletDevicePatters, ua);
     }
 
@@ -61,11 +60,13 @@ public class PlatformParser {
 
             if (matcher.find()) {
                 // Found a match
-                LOGGER.info("Found match in device with key: " + entry.getKey());
+                if (LOGGER.isLoggable(Level.FINEST)) {
+                    LOGGER.finest("Found match in device with key: " + entry.getKey());
+                }
                 return true;
             }
         }
-        LOGGER.info("No match found, using default platform value");
+        LOGGER.finest("No match found, using default platform value");
         return false;
     }
 }

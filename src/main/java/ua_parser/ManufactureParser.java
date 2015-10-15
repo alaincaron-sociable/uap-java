@@ -10,6 +10,7 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -46,12 +47,14 @@ public class ManufactureParser {
             final Matcher matcher = pattern.matcher(uaString);
 
             if (matcher.find()) {
-                LOGGER.info("Found match in manufacture with key: " + key);
+                if (LOGGER.isLoggable(Level.FINEST)) {
+                    LOGGER.finest("Found match in manufacture with key: " + key);
+                }
                 return new Manufacture(key);
             }
         }
 
-        LOGGER.info("Could not find a manufacturer, using default manufaacture value");
+        LOGGER.finest("Could not find a manufacturer, using default manufacture value");
         return new Manufacture(Constants.OTHER);
     }
 
